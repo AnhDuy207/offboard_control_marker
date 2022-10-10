@@ -20,6 +20,11 @@ rosrun offboard_control offb_node
 rosrun offboard_control setmode_offb
 ```
 
+3. Run detect Marker
+```
+rosrun offboard_control MarkerDetection.py
+```
+
 ## PID Controller
 ### Basis theory
 
