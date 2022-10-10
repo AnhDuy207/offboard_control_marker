@@ -17,7 +17,12 @@ roslaunch px4 mavros_posix_sitl.launch
 2. Run the offboard_velocity_control
 ```
 rosrun offboard_control offb_node
-rosrun offboard_corol setmode_offb
+rosrun offboard_control setmode_offb
+```
+
+3. Run detect Marker
+```
+rosrun offboard_control MarkerDetection.py
 ```
 
 ## PID Controller
@@ -56,3 +61,41 @@ pid_cmd.setUMax(max_v);
 pid_cmd.setUMin(min_v);
 ```
 
+## Add marker to gazebo
+### Realsense gazebo plugin d435: [github](https://github.com/pal-robotics/realsense_gazebo_plugin)
+1. git clone above link
+```
+mkdir -p ~/camera_ws/src
+cd ~/camera_ws/src
+git clone https://github.com/pal-robotics/realsense_gazebo_plugin
+```
+
+2. build package 
+```
+cd ..
+catkin build
+```
+**Note: After catkin build will create file librealsense_gazebo_plugin.so**
+
+3. copy file
+```
+sudo cp librealsense_gazebo_plugin.so /opt/ros/melodic/lib/
+```
+### Modify model of gazebo:
+1. copy file
+```
+cd ~/catkin_ws
+mv ./simulation/nested_tags_visual_marker <path PX4-Autopilot_clone>/Tools/sitl_gazebo/models
+```
+
+2. add to file world (e.g /Tools/sitl_gazebo/worlds/empty.world)
+```
+<world name="default">
+  ...
+  <include>
+    <uri>model://nested_tags_visual_marker</uri>
+    <pose>2 2 0.0 0.0 0.0 0.0</pose>
+  </include>
+  ...
+</world>
+```
